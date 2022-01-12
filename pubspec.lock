@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -133,6 +140,15 @@ packages:
       name: flame
       url: "https://pub.dartlang.org"
     source: hosted
+    version: "1.0.0"
+  flame_bloc:
+    dependency: "direct main"
+    description:
+      path: "packages/flame_bloc"
+      ref: "erick.update-flame-bloc"
+      resolved-ref: c0f32d1bc19a8fe32ee4bcd0d945663ad23afdc9
+      url: "git@github.com:flame-engine/flame.git"
+    source: git
     version: "1.0.0"
   flutter:
     dependency: "direct main"

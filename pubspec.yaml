@@ -8,8 +8,13 @@ environment:
 
 dependencies:
   bloc: ^8.0.2
+  equatable: ^2.0.3
   flame: ^1.0.0
-  #flame_bloc: ^1.0.0
+  flame_bloc:
+    git: 
+      url: git@github.com:flame-engine/flame.git
+      ref: erick.update-flame-bloc
+      path: packages/flame_bloc
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
