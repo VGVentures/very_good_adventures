@@ -4,7 +4,7 @@ class InventoryState extends Equatable {
   const InventoryState({
     required this.items,
   });
-  
+
   const InventoryState.initial() : this(items: const []);
 
   final List<GameItem> items;

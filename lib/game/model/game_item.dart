@@ -13,7 +13,7 @@ enum GameItem {
 
 extension GameItemX on GameItem {
   List<GearSlot> get slots {
-    switch(this) {
+    switch (this) {
       case GameItem.sword:
       case GameItem.shield:
         return const [GearSlot.leftHand, GearSlot.rightHand];

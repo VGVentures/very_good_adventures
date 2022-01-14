@@ -5,7 +5,6 @@ abstract class InventoryEvent extends Equatable {
 }
 
 class GameItemPickedUp extends InventoryEvent {
-
   const GameItemPickedUp(this.gameItem);
 
   final GameItem gameItem;
