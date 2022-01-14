@@ -13,14 +13,43 @@ class InventoryView extends StatelessWidget {
 
     return Container(
       color: Colors.white,
-      width: 250,
       height: double.infinity,
       child: GridView.count(
-        crossAxisCount: 3,
+        crossAxisCount: 6,
         children: [
           for (var i = 0; i < inventorySize; i++)
-            const Card(),
+            _InventorySlot(
+              item: i < gameItems.length ? gameItems[i] : null,
+            ),
         ],
+      ),
+    );
+  }
+}
+
+class _InventorySlot extends StatelessWidget {
+  const _InventorySlot({
+    Key? key,
+    this.item,
+  }) : super(key: key);
+
+  final GameItem? item;
+
+  @override
+  Widget build(BuildContext context) {
+    final name = item?.name;
+    return InkWell(
+      onTap: () {
+        if (item != null) {
+          context.read<PlayerBloc>().add(
+                GameItemToggled(
+                  item!,
+                ),
+              );
+        }
+      },
+      child: Card(
+        child: name != null ? Center(child: Text(name)) : null,
       ),
     );
   }

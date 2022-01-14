@@ -1,8 +1,9 @@
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:very_good_adventures/game/game.dart';
 
-class VeryGoodAdventuresGame extends FlameGame
+class VeryGoodAdventuresGame extends FlameBlocGame
     with HasKeyboardHandlerComponents {
   static final Vector2 resolution = Vector2(600, 400);
 
@@ -16,27 +17,30 @@ class VeryGoodAdventuresGame extends FlameGame
       Vector2(resolution.x, resolution.y),
     );
 
-    await add(
-      player = Player()
-        ..x = 80
-        ..y = 120,
-    );
+    await add(Background());
+
+    await add(player = Player()..y = 40);
 
     await Future.wait([
       add(
-        Pickupable()
-          ..x = 20
-          ..y = 20,
+        Pickupable(item: GameItem.sword)
+          ..x = -80
+          ..y = -40,
       ),
       add(
-        Pickupable()
-          ..x = 80
-          ..y = 20,
+        Pickupable(item: GameItem.shield)
+          ..x = -10
+          ..y = -40,
       ),
       add(
-        Pickupable()
-          ..x = 140
-          ..y = 20,
+        Pickupable(item: GameItem.birdHoddie)
+          ..x = 40
+          ..y = -40,
+      ),
+      add(
+        Pickupable(item: GameItem.unicornHoddie)
+          ..x = 100
+          ..y = -40,
       ),
     ]);
 

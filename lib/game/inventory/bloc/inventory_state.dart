@@ -10,7 +10,7 @@ class InventoryState extends Equatable {
   final List<GameItem> items;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [items];
 
   InventoryState copyWith({
     List<GameItem>? items,

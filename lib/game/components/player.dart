@@ -1,10 +1,44 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:very_good_adventures/game/game.dart';
 
+class _PlayerGear extends RectangleComponent {
+  _PlayerGear({
+    required this.slot,
+    required this.item,
+  }) : super(size: Vector2(20, 20));
+
+  final GearSlot slot;
+  final GameItem item;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    paint = Paint()..color = Colors.green;
+
+    switch (slot) {
+      case GearSlot.head:
+        position = Vector2(0, -20);
+        break;
+      case GearSlot.leftHand:
+        position = Vector2(-15, 25);
+        break;
+      case GearSlot.rightHand:
+        position = Vector2(15, 25);
+        break;
+    }
+  }
+}
+
 class Player extends RectangleComponent
-    with KeyboardHandler, HasGameRef<VeryGoodAdventuresGame> {
+    with
+        KeyboardHandler,
+        HasGameRef<VeryGoodAdventuresGame>,
+        BlocComponent<PlayerBloc, PlayerState> {
   Player() : super(size: Vector2(20, 60));
 
   Vector2 direction = Vector2.zero();
@@ -12,17 +46,34 @@ class Player extends RectangleComponent
   static const speed = 100.0;
 
   @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    anchor = Anchor.center;
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
 
     final newPosition = position + direction * speed * dt;
-    final rect = newPosition.toPositionedRect(size);
 
-    if (rect.left > 0 && rect.right < VeryGoodAdventuresGame.resolution.x) {
-      position.x = newPosition.x;
+    position
+      ..x = newPosition.x
+      ..y = newPosition.y;
+  }
+
+  @override
+  void onNewState(PlayerState state) {
+    for (final child in children) {
+      child.shouldRemove = true;
     }
-    if (rect.top > 0 && rect.bottom < VeryGoodAdventuresGame.resolution.y) {
-      position.y = newPosition.y;
+
+    for (final entry in state.gear.entries) {
+      final item = entry.value;
+      if (item != null) {
+        add(_PlayerGear(slot: entry.key, item: item));
+      }
     }
   }
 
@@ -53,12 +104,17 @@ class Player extends RectangleComponent
       final closePickups =
           gameRef.children.whereType<Pickupable>().where((element) {
         final distance = position.distanceTo(element.position);
-        return distance <= 40;
+        return distance <= 50;
       }).toList();
 
       if (closePickups.isNotEmpty) {
-        // TODO add bloc logic to the pick up item
-        closePickups.first.shouldRemove = true;
+        final pickup = closePickups.first..shouldRemove = true;
+
+        gameRef.read<InventoryBloc>().add(
+              GameItemPickedUp(
+                pickup.item,
+              ),
+            );
       }
 
       return true;
