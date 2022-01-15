@@ -7,13 +7,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:very_good_adventures/app/app.dart';
-import 'package:very_good_adventures/counter/counter.dart';
+import 'package:very_good_adventures/game/game.dart';
 
 void main() {
   group('App', () {
-    testWidgets('renders CounterPage', (tester) async {
+    testWidgets('renders VeryGoodAdventuresGameView', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(VeryGoodAdventuresGameView), findsOneWidget);
     });
   });
 }
