@@ -10,9 +10,9 @@ class PlayerView extends StatelessWidget {
     final gear = context.select((PlayerBloc bloc) => bloc.state.gear);
     return Column(
       children: [
-        Text('Head: ${gear[GearSlot.head]?.name ?? ' - '}'),
-        Text('L Hand: ${gear[GearSlot.leftHand]?.name ?? ' - '}'),
-        Text('R Hand: ${gear[GearSlot.rightHand]?.name ?? ' - '}'),
+        Text('Head: ${gear[GearSlot.head]?.name ?? '-'}'),
+        Text('L Hand: ${gear[GearSlot.leftHand]?.name ?? '-'}'),
+        Text('R Hand: ${gear[GearSlot.rightHand]?.name ?? '-'}'),
       ],
     );
   }
