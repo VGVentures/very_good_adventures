@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:very_good_adventures/game/game.dart';
 
-class _PlayerGear extends RectangleComponent {
-  _PlayerGear({
+class PlayerGear extends RectangleComponent {
+  PlayerGear({
     required this.slot,
     required this.item,
   }) : super(size: Vector2(20, 20));
@@ -72,7 +72,7 @@ class Player extends RectangleComponent
     for (final entry in state.gear.entries) {
       final item = entry.value;
       if (item != null) {
-        add(_PlayerGear(slot: entry.key, item: item));
+        add(PlayerGear(slot: entry.key, item: item));
       }
     }
   }
