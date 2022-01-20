@@ -20,6 +20,7 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^9.0.2
+  flame_test: ^1.1.0
   flutter_test:
     sdk: flutter
   mocktail: ^0.2.0

@@ -8,10 +8,10 @@ class VeryGoodAdventuresGameView extends StatefulWidget {
 
   @override
   State<VeryGoodAdventuresGameView> createState() =>
-      _VeryGoodAdventuresGameViewState();
+      VeryGoodAdventuresGameViewState();
 }
 
-class _VeryGoodAdventuresGameViewState
+class VeryGoodAdventuresGameViewState
     extends State<VeryGoodAdventuresGameView> {
   late FocusNode gameFocusNode;
 
