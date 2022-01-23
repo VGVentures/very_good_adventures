@@ -1,21 +1,20 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:very_good_adventures/game/game.dart';
 
 void main() {
-  group('Background', () {
-    test('loads correctly', () async {
-      final background = Background();
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-      await background.onLoad();
+  group('Background', () {
+    FlameTester(VeryGoodAdventuresGame.new).test('loads correctly',
+        (game) async {
+      final background = Background();
+      await game.ensureAdd(background);
 
       expect(background.size, equals(Vector2(600, 200)));
       expect(background.anchor, equals(Anchor.center));
-      expect(
-        background.paint.color.value,
-        equals(Colors.grey.value),
-      );
+      expect(background.sprite, isNotNull);
     });
   });
 }

@@ -27,60 +27,62 @@ class MockInventoryBloc extends Mock implements InventoryBloc {}
 class MockPlayerBloc extends Mock implements PlayerBloc {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  final tester = FlameTester(VeryGoodAdventuresGame.new);
+
   group('Player', () {
-    test('loads correctly', () async {
+    tester.test('loads correctly', (game) async {
       final player = Player();
+      await game.ensureAdd(player);
 
-      await player.onLoad();
-
-      expect(player.size, equals(Vector2(20, 60)));
+      expect(player.size, equals(Vector2(30, 60)));
       expect(player.anchor, equals(Anchor.center));
-      expect(
-        player.paint.color.value,
-        equals(Colors.white.value),
-      );
+      expect(player.sprite, isNotNull);
     });
 
     group('update', () {
-      test(
-        'calculates the correct position when moving vertically',
-        () {
-          final player = Player()
-            ..direction = Vector2(0, 1)
-            ..update(0.1);
+      tester
+        ..test(
+          'calculates the correct position when moving vertically',
+          (game) async {
+            final player = Player()..direction = Vector2(0, 1);
 
-          expect(player.position.y, equals(10));
-        },
-      );
+            await game.ensureAdd(player);
 
-      test(
-        'calculates the correct position when moving horizontally',
-        () {
-          final player = Player()
-            ..direction = Vector2(1, 0)
-            ..update(0.1);
+            game.update(0.1);
 
-          expect(player.position.x, equals(10));
-        },
-      );
+            expect(player.position.y, equals(10));
+          },
+        )
+        ..test(
+          'calculates the correct position when moving horizontally',
+          (game) async {
+            final player = Player()..direction = Vector2(1, 0);
 
-      test(
-        'calculates the correct position when moving on both axis',
-        () {
-          final player = Player()
-            ..direction = Vector2(1, 1)
-            ..update(0.1);
+            await game.ensureAdd(player);
 
-          expect(player.position, equals(Vector2.all(10)));
-        },
-      );
+            game.update(0.1);
+            expect(player.position.x, equals(10));
+          },
+        )
+        ..test(
+          'calculates the correct position when moving on both axis',
+          (game) async {
+            final player = Player()..direction = Vector2(1, 1);
+
+            await game.ensureAdd(player);
+            game.update(0.1);
+
+            expect(player.position, equals(Vector2.all(10)));
+          },
+        );
     });
 
     group('onNewState', () {
       bool Function(Component) findPlayerGear(GameItem item) =>
           (Component child) => child is PlayerGear && child.item == item;
 
-      test('adds the new gear', () {
+      tester.test('adds the new gear', (game) async {
         final player = Player()
           ..onNewState(
             const PlayerState(
@@ -90,8 +92,9 @@ void main() {
                 GearSlot.leftHand: GameItem.shield,
               },
             ),
-          )
-          ..updateTree(0);
+          );
+
+        await game.ensureAdd(player);
 
         expect(player.children.length, equals(3));
         expect(
@@ -143,7 +146,7 @@ void main() {
       });
 
       group('movement', () {
-        FlameTester(VeryGoodAdventuresGame.new)
+        tester
           ..test('goes left when A pressed', (game) {
             final event = MockRawKeyDownEvent();
             when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.keyA);
@@ -263,12 +266,15 @@ void main() {
 
               await tester.pump();
 
-              game.player.position = Vector2.all(100);
+              //game.player.position = Vector2.all(100);
 
-              final event = MockRawKeyDownEvent();
-              when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
+              await tester.sendKeyDownEvent(LogicalKeyboardKey.space);
+              await tester.pump();
 
-              game.player.onKeyEvent(event, {});
+              //final event = MockRawKeyDownEvent();
+              //when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
+
+              //game.player.onKeyEvent(event, {});
 
               verify(
                 () => inventoryBloc.add(

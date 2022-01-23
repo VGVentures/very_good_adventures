@@ -5,7 +5,10 @@ import 'package:very_good_adventures/game/game.dart';
 class Pickupable extends RectangleComponent {
   Pickupable({
     required this.item,
-  }) : super(size: Vector2.all(20)) {
+  }) : super(
+          size: Vector2.all(20),
+          priority: 3,
+        ) {
     paint = Paint()..color = Colors.blue;
   }
 

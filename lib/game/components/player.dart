@@ -34,14 +34,20 @@ class PlayerGear extends RectangleComponent {
   }
 }
 
-class Player extends RectangleComponent
+class Player extends SpriteComponent
     with
         KeyboardHandler,
         HasGameRef<VeryGoodAdventuresGame>,
         BlocComponent<PlayerBloc, PlayerState> {
-  Player() : super(size: Vector2(20, 60));
+
+  Player()
+      : super(
+          size: Vector2(30, 60),
+          priority: 2,
+        );
 
   Vector2 direction = Vector2.zero();
+  bool goingRight = true;
 
   static const speed = 100.0;
 
@@ -50,6 +56,9 @@ class Player extends RectangleComponent
     await super.onLoad();
 
     anchor = Anchor.center;
+
+
+    sprite = await gameRef.loadSprite('player.png');
   }
 
   @override
@@ -85,11 +94,19 @@ class Player extends RectangleComponent
     final isDown = event is RawKeyDownEvent;
 
     if (event.logicalKey == LogicalKeyboardKey.keyA) {
+      if (goingRight) {
+        flipHorizontallyAroundCenter();
+      }
       direction.x = isDown ? -1 : 0;
+      goingRight = false;
       return true;
     }
     if (event.logicalKey == LogicalKeyboardKey.keyD) {
+      if (!goingRight) {
+        flipHorizontallyAroundCenter();
+      }
       direction.x = isDown ? 1 : 0;
+      goingRight = true;
       return true;
     }
     if (event.logicalKey == LogicalKeyboardKey.keyW) {

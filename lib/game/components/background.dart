@@ -1,14 +1,20 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:very_good_adventures/game/game.dart';
 
-class Background extends RectangleComponent {
-  Background() : super(size: Vector2(600, 200));
+class Background extends SpriteComponent
+    with HasGameRef<VeryGoodAdventuresGame> {
+  Background()
+      : super(
+          size: Vector2(600, 200),
+          priority: 1,
+        );
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
     anchor = Anchor.center;
-    paint = Paint()..color = Colors.grey;
+
+    sprite = await gameRef.loadSprite('background.png');
   }
 }
