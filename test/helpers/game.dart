@@ -2,6 +2,7 @@
 
 import 'package:flame/game.dart';
 
+// https://github.com/flame-engine/flame/issues/1335
 extension FlameGameExtension on FlameGame {
   Future<void> gameLoading() async {
     // This is internal to Flame, but it seems to be a the only way to make sure

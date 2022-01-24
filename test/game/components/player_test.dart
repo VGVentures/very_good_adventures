@@ -220,6 +220,30 @@ void main() {
             game.player.onKeyEvent(event, <LogicalKeyboardKey>{});
 
             expect(game.player.direction, equals(Vector2(0, 0)));
+          })
+          ..test('flip the sprite when going right', (game) {
+            final event = MockRawKeyDownEvent();
+            when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.keyA);
+
+            game.player.onKeyEvent(event, <LogicalKeyboardKey>{});
+
+            expect(game.player.scale.x, equals(-1));
+          })
+          ..test('flip the sprite when going right', (game) {
+            final event = MockRawKeyDownEvent();
+            when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.keyA);
+
+            game.player.onKeyEvent(event, <LogicalKeyboardKey>{});
+            expect(game.player.scale.x, equals(-1));
+
+            final secondEvent = MockRawKeyDownEvent();
+            when(() => secondEvent.logicalKey).thenReturn(
+              LogicalKeyboardKey.keyD,
+            );
+
+            game.player.onKeyEvent(secondEvent, <LogicalKeyboardKey>{});
+
+            expect(game.player.scale.x, equals(1));
           });
       });
 
@@ -261,7 +285,6 @@ void main() {
           ..widgetTest(
             'pick up the item when it is close enough',
             (game, tester) async {
-              //await game.onLoadComplete;
               await tester.pump();
 
               await game.ensureAdd(
