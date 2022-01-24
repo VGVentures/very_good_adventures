@@ -39,7 +39,6 @@ class Player extends SpriteComponent
         KeyboardHandler,
         HasGameRef<VeryGoodAdventuresGame>,
         BlocComponent<PlayerBloc, PlayerState> {
-
   Player()
       : super(
           size: Vector2(30, 60),
@@ -56,7 +55,6 @@ class Player extends SpriteComponent
     await super.onLoad();
 
     anchor = Anchor.center;
-
 
     sprite = await gameRef.loadSprite('player.png');
   }

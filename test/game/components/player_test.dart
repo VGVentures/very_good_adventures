@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:very_good_adventures/game/game.dart';
 
+import '../../helpers/helpers.dart';
+
 class MockRawKeyDownEvent extends Mock implements RawKeyDownEvent {
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -222,6 +224,8 @@ void main() {
       });
 
       group('item pickups', () {
+        TestWidgetsFlutterBinding.ensureInitialized();
+
         late InventoryBloc inventoryBloc;
         late PlayerBloc playerBloc;
 
@@ -257,24 +261,24 @@ void main() {
           ..widgetTest(
             'pick up the item when it is close enough',
             (game, tester) async {
+              //await game.onLoadComplete;
+              await tester.pump();
+
               await game.ensureAdd(
                 Pickupable(item: GameItem.sword)
-                  ..position = Vector2.all(
-                    100,
+                  ..position = Vector2(
+                    0,
+                    40,
                   ),
               );
 
+              await game.gameLoading();
               await tester.pump();
 
-              //game.player.position = Vector2.all(100);
+              final event = MockRawKeyDownEvent();
+              when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
 
-              await tester.sendKeyDownEvent(LogicalKeyboardKey.space);
-              await tester.pump();
-
-              //final event = MockRawKeyDownEvent();
-              //when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
-
-              //game.player.onKeyEvent(event, {});
+              game.player.onKeyEvent(event, {});
 
               verify(
                 () => inventoryBloc.add(
@@ -294,6 +298,7 @@ void main() {
               );
 
               await tester.pump();
+              await game.gameLoading();
 
               final event = MockRawKeyDownEvent();
               when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
