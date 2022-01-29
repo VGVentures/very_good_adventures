@@ -32,6 +32,35 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final tester = FlameTester(VeryGoodAdventuresGame.new);
 
+  group('PlayerGear', () {
+    tester
+      ..test('loads sword correctly', (game) async {
+        final gear = PlayerGear(item: GameItem.sword, slot: GearSlot.leftHand);
+        await game.ensureAdd(gear);
+
+        expect(gear.sprite, isNotNull);
+      })
+      ..test('loads shield correctly', (game) async {
+        final gear = PlayerGear(item: GameItem.shield, slot: GearSlot.leftHand);
+        await game.ensureAdd(gear);
+
+        expect(gear.sprite, isNotNull);
+      })
+      ..test('loads unicornHoddie correctly', (game) async {
+        final gear =
+            PlayerGear(item: GameItem.unicornHoddie, slot: GearSlot.head);
+        await game.ensureAdd(gear);
+
+        expect(gear.sprite, isNotNull);
+      })
+      ..test('loads birdHoddie correctly', (game) async {
+        final gear = PlayerGear(item: GameItem.birdHoddie, slot: GearSlot.head);
+        await game.ensureAdd(gear);
+
+        expect(gear.sprite, isNotNull);
+      });
+  });
+
   group('Player', () {
     tester.test('loads correctly', (game) async {
       final player = Player();
@@ -118,7 +147,7 @@ void main() {
           ..onNewState(
             const PlayerState(
               gear: {
-                GearSlot.head: GameItem.birdHoddie,
+                GearSlot.head: GameItem.unicornHoddie,
                 GearSlot.rightHand: GameItem.sword,
                 GearSlot.leftHand: GameItem.shield,
               },
@@ -334,41 +363,6 @@ void main() {
             },
           );
       });
-    });
-  });
-
-  group('PlayerGear', () {
-    test('sets the correct position for head gears', () async {
-      final playerGear = PlayerGear(
-        slot: GearSlot.head,
-        item: GameItem.birdHoddie,
-      );
-
-      await playerGear.onLoad();
-
-      expect(playerGear.position, Vector2(0, -20));
-    });
-
-    test('sets the correct position for left hand gears', () async {
-      final playerGear = PlayerGear(
-        slot: GearSlot.leftHand,
-        item: GameItem.sword,
-      );
-
-      await playerGear.onLoad();
-
-      expect(playerGear.position, Vector2(-15, 25));
-    });
-
-    test('sets the correct position for right hand gears', () async {
-      final playerGear = PlayerGear(
-        slot: GearSlot.rightHand,
-        item: GameItem.sword,
-      );
-
-      await playerGear.onLoad();
-
-      expect(playerGear.position, Vector2(15, 25));
     });
   });
 }

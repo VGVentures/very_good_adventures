@@ -1,15 +1,15 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame_bloc/flame_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:very_good_adventures/game/game.dart';
 
-class PlayerGear extends RectangleComponent {
+class PlayerGear extends SpriteComponent
+    with HasGameRef<VeryGoodAdventuresGame> {
   PlayerGear({
     required this.slot,
     required this.item,
-  }) : super(size: Vector2(20, 20));
+  });
 
   final GearSlot slot;
   final GameItem item;
@@ -18,17 +18,40 @@ class PlayerGear extends RectangleComponent {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    paint = Paint()..color = Colors.green;
+    sprite = await gameRef.loadSprite('${item.name}.png');
 
-    switch (slot) {
-      case GearSlot.head:
-        position = Vector2(0, -20);
+    switch (item) {
+      case GameItem.sword:
+        size = Vector2(15, 30);
+        anchor = Anchor.bottomCenter;
+        position = Vector2(slot == GearSlot.leftHand ? 2 : 28, 37.5);
         break;
-      case GearSlot.leftHand:
-        position = Vector2(-15, 25);
+      case GameItem.shield:
+        size = Vector2.all(25);
+        anchor = Anchor.center;
+        position = Vector2(slot == GearSlot.leftHand ? 0 : 30, 35);
         break;
-      case GearSlot.rightHand:
-        position = Vector2(15, 25);
+      case GameItem.birdHoddie:
+        anchor = Anchor.bottomCenter;
+        position = Vector2(17, 8);
+
+        final factor = 30 / sprite!.image.width;
+        size = Vector2(
+          sprite!.image.width * factor,
+          sprite!.image.height * factor,
+        );
+
+        break;
+      case GameItem.unicornHoddie:
+        anchor = Anchor.bottomCenter;
+        position = Vector2(25, 10);
+
+        final factor = 45 / sprite!.image.width;
+        size = Vector2(
+          sprite!.image.width * factor,
+          sprite!.image.height * factor,
+        );
+
         break;
     }
   }

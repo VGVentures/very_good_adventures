@@ -1,16 +1,13 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import 'package:very_good_adventures/game/game.dart';
 
-class Pickupable extends RectangleComponent {
+class Pickupable extends SpriteComponent
+    with HasGameRef<VeryGoodAdventuresGame> {
   Pickupable({
     required this.item,
   }) : super(
-          size: Vector2.all(20),
           priority: 3,
-        ) {
-    paint = Paint()..color = Colors.blue;
-  }
+        );
 
   final GameItem item;
 
@@ -19,5 +16,13 @@ class Pickupable extends RectangleComponent {
     await super.onLoad();
 
     anchor = Anchor.center;
+
+    sprite = await gameRef.loadSprite('${item.name}.png');
+
+    final factor = 20 / sprite!.image.height;
+    size = Vector2(
+      sprite!.image.width * factor,
+      sprite!.image.height * factor,
+    );
   }
 }
