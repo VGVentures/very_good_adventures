@@ -11,8 +11,7 @@ class InventoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameItems = context.watch<InventoryBloc>().state.items;
 
-    return Container(
-      color: Colors.white,
+    return SizedBox(
       height: double.infinity,
       child: GridView.count(
         crossAxisCount: 6,
