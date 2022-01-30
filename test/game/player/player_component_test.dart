@@ -317,7 +317,7 @@ void main() {
               await tester.pump();
 
               await game.ensureAdd(
-                Pickupable(item: GameItem.sword)
+                Chest(item: GameItem.sword)
                   ..position = Vector2(
                     0,
                     40,
@@ -343,7 +343,7 @@ void main() {
             'do nothing if no item is near',
             (game, tester) async {
               await game.ensureAdd(
-                Pickupable(item: GameItem.sword)
+                Chest(item: GameItem.sword)
                   ..position = Vector2.all(
                     100,
                   ),

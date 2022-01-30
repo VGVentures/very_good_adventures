@@ -1,2 +1,2 @@
 export 'background.dart';
-export 'pickupable.dart';
+export 'chest.dart';

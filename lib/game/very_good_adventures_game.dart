@@ -25,22 +25,22 @@ class VeryGoodAdventuresGame extends FlameBlocGame
 
     await Future.wait([
       add(
-        Pickupable(item: GameItem.sword)
+        Chest(item: GameItem.sword)
           ..x = -80
           ..y = -40,
       ),
       add(
-        Pickupable(item: GameItem.shield)
+        Chest(item: GameItem.shield)
           ..x = -10
           ..y = -40,
       ),
       add(
-        Pickupable(item: GameItem.birdHoddie)
+        Chest(item: GameItem.birdHoddie)
           ..x = 40
           ..y = -40,
       ),
       add(
-        Pickupable(item: GameItem.unicornHoddie)
+        Chest(item: GameItem.unicornHoddie)
           ..x = 100
           ..y = -40,
       ),

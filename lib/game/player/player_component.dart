@@ -65,7 +65,7 @@ class Player extends SpriteComponent
   Player()
       : super(
           size: Vector2(30, 60),
-          priority: 2,
+          priority: 3,
         );
 
   Vector2 direction = Vector2.zero();
@@ -139,18 +139,20 @@ class Player extends SpriteComponent
       return true;
     }
     if (event.logicalKey == LogicalKeyboardKey.space) {
-      final closePickups =
-          gameRef.children.whereType<Pickupable>().where((element) {
-        final distance = position.distanceTo(element.position);
-        return distance <= 50;
+      final closeChests = gameRef.children.whereType<Chest>().where((chest) {
+        if (!(chest.current ?? false)) {
+          final distance = position.distanceTo(chest.position);
+          return distance <= 50;
+        }
+        return false;
       }).toList();
 
-      if (closePickups.isNotEmpty) {
-        final pickup = closePickups.first..shouldRemove = true;
+      if (closeChests.isNotEmpty) {
+        final chest = closeChests.first..current = true;
 
         gameRef.read<InventoryBloc>().add(
               GameItemPickedUp(
-                pickup.item,
+                chest.item,
               ),
             );
       }
