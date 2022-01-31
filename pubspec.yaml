@@ -11,9 +11,9 @@ dependencies:
   equatable: ^2.0.3
   flame: ^1.0.0
   flame_bloc: ^1.1.0
+  flex_color_scheme: ^4.2.0
   flutter:
     sdk: flutter
-  flex_color_scheme: ^4.2.0
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
