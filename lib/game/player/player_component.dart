@@ -18,40 +18,23 @@ class PlayerGear extends SpriteComponent
   Future<void> onLoad() async {
     await super.onLoad();
 
-    sprite = await gameRef.loadSprite('${item.name}.png');
+    sprite = await gameRef.loadSprite('${item.name}_gear.png');
 
-    switch (item) {
-      case GameItem.sword:
-        size = Vector2(15, 30);
+    switch (slot) {
+      case GearSlot.head:
         anchor = Anchor.bottomCenter;
-        position = Vector2(slot == GearSlot.leftHand ? 2 : 28, 37.5);
+        size = Vector2(70, 40);
+        position = Vector2(15, 8);
         break;
-      case GameItem.shield:
-        size = Vector2.all(25);
+      case GearSlot.leftHand:
         anchor = Anchor.center;
-        position = Vector2(slot == GearSlot.leftHand ? 0 : 30, 35);
+        size = Vector2(40, 75);
+        position = Vector2(0, 20);
         break;
-      case GameItem.birdHoddie:
-        anchor = Anchor.bottomCenter;
-        position = Vector2(17, 8);
-
-        final factor = 30 / sprite!.image.width;
-        size = Vector2(
-          sprite!.image.width * factor,
-          sprite!.image.height * factor,
-        );
-
-        break;
-      case GameItem.unicornHoddie:
-        anchor = Anchor.bottomCenter;
-        position = Vector2(25, 10);
-
-        final factor = 45 / sprite!.image.width;
-        size = Vector2(
-          sprite!.image.width * factor,
-          sprite!.image.height * factor,
-        );
-
+      case GearSlot.rightHand:
+        anchor = Anchor.center;
+        size = Vector2(45, 75);
+        position = Vector2(30, 20);
         break;
     }
   }
