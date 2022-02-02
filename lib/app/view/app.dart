@@ -8,7 +8,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:very_good_adventures/game/game.dart';
 import 'package:very_good_adventures/l10n/l10n.dart';
 import 'package:very_good_adventures/title/view/view.dart';
 
