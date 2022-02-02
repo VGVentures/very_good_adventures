@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:very_good_adventures/game/game.dart';
 import 'package:very_good_adventures/l10n/l10n.dart';
+import 'package:very_good_adventures/title/view/view.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const VeryGoodAdventuresGameView(),
+      home: const TitlePage(),
     );
   }
 }

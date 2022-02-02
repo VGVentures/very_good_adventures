@@ -1,6 +1,5 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_adventures/game/game.dart';
 
 class VeryGoodAdventuresGameView extends StatefulWidget {
@@ -32,38 +31,32 @@ class VeryGoodAdventuresGameViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider<InventoryBloc>(create: (_) => InventoryBloc()),
-          BlocProvider<PlayerBloc>(create: (_) => PlayerBloc())
+      body: Row(
+        children: [
+          Expanded(
+            child: MouseRegion(
+              onHover: (_) {
+                if (!gameFocusNode.hasFocus) {
+                  gameFocusNode.requestFocus();
+                }
+              },
+              child: GameWidget(
+                focusNode: gameFocusNode,
+                game: VeryGoodAdventuresGame(),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 250,
+            height: double.infinity,
+            child: Column(
+              children: const [
+                Expanded(child: PlayerView()),
+                Expanded(child: InventoryView()),
+              ],
+            ),
+          ),
         ],
-        child: Row(
-          children: [
-            Expanded(
-              child: MouseRegion(
-                onHover: (_) {
-                  if (!gameFocusNode.hasFocus) {
-                    gameFocusNode.requestFocus();
-                  }
-                },
-                child: GameWidget(
-                  focusNode: gameFocusNode,
-                  game: VeryGoodAdventuresGame(),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 250,
-              height: double.infinity,
-              child: Column(
-                children: const [
-                  Expanded(child: PlayerView()),
-                  Expanded(child: InventoryView()),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

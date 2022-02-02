@@ -52,15 +52,15 @@ void main() {
       await _pumpView(tester);
 
       expect(
-        find.text('Head: ${GameItem.unicornHoddie.name}'),
+        find.byKey(Key('_gear_${GameItem.unicornHoddie.name}')),
         findsOneWidget,
       );
       expect(
-        find.text('L Hand: ${GameItem.sword.name}'),
+        find.byKey(Key('_gear_${GameItem.sword.name}')),
         findsOneWidget,
       );
       expect(
-        find.text('R Hand: ${GameItem.shield.name}'),
+        find.byKey(Key('_gear_${GameItem.shield.name}')),
         findsOneWidget,
       );
     });
@@ -71,16 +71,16 @@ void main() {
       await _pumpView(tester);
 
       expect(
-        find.text('Head: -'),
-        findsOneWidget,
+        find.byKey(Key('_gear_${GameItem.unicornHoddie.name}')),
+        findsNothing,
       );
       expect(
-        find.text('L Hand: -'),
-        findsOneWidget,
+        find.byKey(Key('_gear_${GameItem.sword.name}')),
+        findsNothing,
       );
       expect(
-        find.text('R Hand: -'),
-        findsOneWidget,
+        find.byKey(Key('_gear_${GameItem.shield.name}')),
+        findsNothing,
       );
     });
   });

@@ -5,20 +5,62 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:very_good_adventures/app/app.dart';
 import 'package:very_good_adventures/game/game.dart';
+import 'package:very_good_adventures/title/title.dart';
+
+import '../../helpers/helpers.dart';
+
+class MockInventoryBloc extends Mock implements InventoryBloc {}
+
+class MockPlayerBloc extends Mock implements PlayerBloc {}
 
 void main() {
   group('App', () {
-    testWidgets('renders VeryGoodAdventuresGameView', (tester) async {
+    testWidgets('renders the TitleView', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(VeryGoodAdventuresGameView), findsOneWidget);
+      expect(find.byType(TitleView), findsOneWidget);
+    });
+
+    testWidgets('open the game when tapping on Play', (tester) async {
+      await tester.pumpWidget(const App());
+      await tester.tap(find.text('Play!'));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(VeryGoodAdventuresPage), findsOneWidget);
     });
 
     testWidgets('request focus on hover', (tester) async {
-      await tester.pumpWidget(const App());
+      final inventoryBloc = MockInventoryBloc();
+      final playerBloc = MockPlayerBloc();
+
+      whenListen(
+        inventoryBloc,
+        Stream.value(const InventoryState.initial()),
+        initialState: const InventoryState.initial(),
+      );
+      whenListen(
+        playerBloc,
+        Stream.value(const PlayerState.initial()),
+        initialState: const PlayerState.initial(),
+      );
+      await tester.pumpApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<InventoryBloc>.value(value: inventoryBloc),
+            BlocProvider<PlayerBloc>.value(value: playerBloc),
+          ],
+          child: const VeryGoodAdventuresPage(),
+        ),
+      );
+
+      await tester.pump();
 
       // Remove focus
       tester
