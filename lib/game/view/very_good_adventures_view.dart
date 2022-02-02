@@ -51,8 +51,9 @@ class VeryGoodAdventuresGameViewState
             height: double.infinity,
             child: Column(
               children: const [
-                Expanded(child: PlayerView()),
+                PlayerView(),
                 Expanded(child: InventoryView()),
+                SizedBox(height: 8),
               ],
             ),
           ),

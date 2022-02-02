@@ -21,35 +21,36 @@ class PlayerView extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
+        PanelContainer(
+          height: 120,
           child: Stack(
             children: [
               Positioned.fill(
                 child: Opacity(
-                  opacity: 0.4,
+                  opacity: 0.8,
                   child: Image.asset(
                     'assets/images/player_silhouette.png',
                   ),
                 ),
               ),
               Positioned(
-                top: 6,
-                left: 103,
-                child: _ItemSlot(
+                top: 0,
+                left: 88,
+                child: ItemSlot(
                   item: gear[GearSlot.head],
                 ),
               ),
               Positioned(
-                top: 60,
+                top: 42,
                 left: 40,
-                child: _ItemSlot(
+                child: ItemSlot(
                   item: gear[GearSlot.leftHand],
                 ),
               ),
               Positioned(
-                top: 60,
-                left: 168,
-                child: _ItemSlot(
+                top: 42,
+                left: 134,
+                child: ItemSlot(
                   item: gear[GearSlot.rightHand],
                 ),
               ),
@@ -58,29 +59,6 @@ class PlayerView extends StatelessWidget {
         ),
         const SizedBox(height: 16),
       ],
-    );
-  }
-}
-
-class _ItemSlot extends StatelessWidget {
-  const _ItemSlot({Key? key, this.item}) : super(key: key);
-
-  final GameItem? item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        width: 35,
-        height: 35,
-        padding: const EdgeInsets.all(2),
-        child: item != null
-            ? Image.asset(
-                'assets/images/${item!.name}.png',
-                key: Key('_gear_${item!.name}'),
-              )
-            : null,
-      ),
     );
   }
 }

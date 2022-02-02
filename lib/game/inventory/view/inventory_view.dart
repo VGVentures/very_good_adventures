@@ -13,14 +13,16 @@ class InventoryView extends StatelessWidget {
 
     return SizedBox(
       height: double.infinity,
-      child: GridView.count(
-        crossAxisCount: 6,
-        children: [
-          for (var i = 0; i < inventorySize; i++)
-            _InventorySlot(
-              item: i < gameItems.length ? gameItems[i] : null,
-            ),
-        ],
+      child: PanelContainer(
+        child: GridView.count(
+          crossAxisCount: 6,
+          children: [
+            for (var i = 0; i < inventorySize; i++)
+              _InventorySlot(
+                item: i < gameItems.length ? gameItems[i] : null,
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -36,7 +38,6 @@ class _InventorySlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = item?.name;
     return InkWell(
       onTap: () {
         if (item != null) {
@@ -47,8 +48,8 @@ class _InventorySlot extends StatelessWidget {
               );
         }
       },
-      child: Card(
-        child: name != null ? Center(child: Text(name)) : null,
+      child: ItemSlot(
+        item: item,
       ),
     );
   }

@@ -4,3 +4,4 @@ export 'model/model.dart';
 export 'player/player.dart';
 export 'very_good_adventures_game.dart';
 export 'view/view.dart';
+export 'widgets/widgets.dart';

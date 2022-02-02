@@ -63,9 +63,9 @@ void main() {
 
       await _pumpView(tester);
 
-      expect(find.text(GameItem.unicornHoddie.name), findsOneWidget);
-      expect(find.text(GameItem.sword.name), findsOneWidget);
-      expect(find.text(GameItem.shield.name), findsOneWidget);
+      expect(find.byKey(Key('_gear_unicornHoddie')), findsOneWidget);
+      expect(find.byKey(Key('_gear_sword')), findsOneWidget);
+      expect(find.byKey(Key('_gear_shield')), findsOneWidget);
     });
 
     testWidgets('adds [GameItemToggled] when taping an item', (tester) async {
@@ -87,7 +87,7 @@ void main() {
 
       await _pumpView(tester);
 
-      await tester.tap(find.text(GameItem.shield.name));
+      await tester.tap(find.byKey(Key('_gear_shield')));
 
       verify(() => playerBloc.add(GameItemToggled(GameItem.shield))).called(1);
     });
