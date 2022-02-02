@@ -327,7 +327,7 @@ void main() {
               await game.gameLoading();
               await tester.pump();
 
-              final event = MockRawKeyDownEvent();
+              final event = MockRawKeyUpEvent();
               when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
 
               game.player.onKeyEvent(event, {});
@@ -352,7 +352,7 @@ void main() {
               await tester.pump();
               await game.gameLoading();
 
-              final event = MockRawKeyDownEvent();
+              final event = MockRawKeyUpEvent();
               when(() => event.logicalKey).thenReturn(LogicalKeyboardKey.space);
 
               game.player.onKeyEvent(event, {});

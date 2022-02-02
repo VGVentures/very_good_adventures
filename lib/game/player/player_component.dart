@@ -121,7 +121,7 @@ class Player extends SpriteComponent
       direction.y = isDown ? 1 : 0;
       return true;
     }
-    if (event.logicalKey == LogicalKeyboardKey.space) {
+    if (!isDown && event.logicalKey == LogicalKeyboardKey.space) {
       final closeChests = gameRef.children.whereType<Chest>().where((chest) {
         if (!(chest.current ?? false)) {
           final distance = position.distanceTo(chest.position);
