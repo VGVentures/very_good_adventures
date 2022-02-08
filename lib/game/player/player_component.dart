@@ -9,7 +9,7 @@ class PlayerGear extends SpriteComponent
   PlayerGear({
     required this.slot,
     required this.item,
-  });
+  }) : super(priority: slot == GearSlot.head ? 4 : 5);
 
   final GearSlot slot;
   final GameItem item;
@@ -40,7 +40,7 @@ class PlayerGear extends SpriteComponent
   }
 }
 
-class Player extends SpriteComponent
+class Player extends SpriteAnimationGroupComponent<bool>
     with
         KeyboardHandler,
         HasGameRef<VeryGoodAdventuresGame>,
@@ -62,12 +62,37 @@ class Player extends SpriteComponent
 
     anchor = Anchor.center;
 
-    sprite = await gameRef.loadSprite('player.png');
+    final idleFrame = await gameRef.loadSprite('player.png');
+
+    final runningFrames = await Future.wait([
+      gameRef.loadSprite('player_2.png'),
+      gameRef.loadSprite('player_3.png'),
+      gameRef.loadSprite('player_4.png'),
+    ]);
+
+    final idle = SpriteAnimation([SpriteAnimationFrame(idleFrame, 0)]);
+
+    final running = SpriteAnimation(
+      runningFrames
+          .map(
+            (sprite) => SpriteAnimationFrame(sprite, 0.2),
+          )
+          .toList(),
+    );
+
+    animations = {
+      true: running,
+      false: idle,
+    };
+
+    current = false;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+
+    current = direction.length != 0;
 
     final newPosition = position + direction * speed * dt;
 
