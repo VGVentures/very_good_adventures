@@ -7,10 +7,10 @@ part 'player_state.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   PlayerBloc() : super(const PlayerState.initial()) {
-    on<GameItemToggled>(_handleGameItemToggled);
+    on<GameItemToggled>(_onGameItemToggled);
   }
 
-  void _handleGameItemToggled(
+  void _onGameItemToggled(
     GameItemToggled event,
     Emitter<PlayerState> emit,
   ) {

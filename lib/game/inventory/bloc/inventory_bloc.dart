@@ -7,10 +7,10 @@ part 'inventory_state.dart';
 
 class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   InventoryBloc() : super(const InventoryState.initial()) {
-    on<GameItemPickedUp>(_handleGameItemPickedUp);
+    on<GameItemPickedUp>(_onGameItemPickedUp);
   }
 
-  void _handleGameItemPickedUp(
+  void _onGameItemPickedUp(
     GameItemPickedUp event,
     Emitter<InventoryState> emit,
   ) {
