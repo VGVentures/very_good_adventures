@@ -68,7 +68,7 @@ void main() {
 
       expect(player.size, equals(Vector2(30, 60)));
       expect(player.anchor, equals(Anchor.center));
-      expect(player.sprite, isNotNull);
+      expect(player.animations?.length, equals(2));
     });
 
     group('update', () {
