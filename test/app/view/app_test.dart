@@ -31,7 +31,8 @@ void main() {
       await tester.pumpWidget(const App());
       await tester.tap(find.text('Play!'));
 
-      await tester.pumpAndSettle();
+      await tester.pump(); // One for the navigation animation
+      await tester.pump(); // One for the page itself to render
 
       expect(find.byType(VeryGoodAdventuresPage), findsOneWidget);
     });
