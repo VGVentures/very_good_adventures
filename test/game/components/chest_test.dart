@@ -13,7 +13,7 @@ void main() {
   group('Chest', () {
     FlameTester(() {
       return VeryGoodAdventuresGame(
-        playerBloc: PlayerBloc(),
+        playerBloc: MockPlayerBloc(),
         inventoryBloc: MockInventoryBloc(),
       );
     }).test('loads correctly', (game) async {
