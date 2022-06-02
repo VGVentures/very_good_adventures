@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:very_good_adventures/game/game.dart';
@@ -40,11 +39,8 @@ class PlayerGear extends SpriteComponent
   }
 }
 
-class Player extends SpriteAnimationGroupComponent<bool>
-    with
-        KeyboardHandler,
-        HasGameRef<VeryGoodAdventuresGame>,
-        BlocComponent<PlayerBloc, PlayerState> {
+class Player extends PositionComponent
+    with KeyboardHandler, HasGameRef<VeryGoodAdventuresGame> {
   Player()
       : super(
           size: Vector2(30, 60),
@@ -54,6 +50,9 @@ class Player extends SpriteAnimationGroupComponent<bool>
   Vector2 direction = Vector2.zero();
   bool goingRight = true;
 
+  late final PositionComponent idle;
+  late final PositionComponent running;
+
   static const speed = 100.0;
 
   @override
@@ -62,7 +61,13 @@ class Player extends SpriteAnimationGroupComponent<bool>
 
     anchor = Anchor.center;
 
-    final idleFrame = await gameRef.loadSprite('player.png');
+    await add(
+      FlameBlocListener<PlayerBloc, PlayerState>(onNewState: _handleNewState),
+    );
+
+    final idleSprite = await gameRef.loadSprite('player.png');
+    idle = SpriteComponent(sprite: idleSprite, size: size);
+    await add(idle);
 
     final runningFrames = await Future.wait([
       gameRef.loadSprite('player_2.png'),
@@ -70,29 +75,19 @@ class Player extends SpriteAnimationGroupComponent<bool>
       gameRef.loadSprite('player_4.png'),
     ]);
 
-    final idle = SpriteAnimation([SpriteAnimationFrame(idleFrame, 0)]);
-
-    final running = SpriteAnimation(
+    final runningAnimation = SpriteAnimation(
       runningFrames
           .map(
             (sprite) => SpriteAnimationFrame(sprite, 0.2),
           )
           .toList(),
     );
-
-    animations = {
-      true: running,
-      false: idle,
-    };
-
-    current = false;
+    running = SpriteAnimationComponent(animation: runningAnimation, size: size);
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-
-    current = direction.length != 0;
 
     final newPosition = position + direction * speed * dt;
 
@@ -101,9 +96,8 @@ class Player extends SpriteAnimationGroupComponent<bool>
       ..y = newPosition.y;
   }
 
-  @override
-  void onNewState(PlayerState state) {
-    for (final child in children) {
+  void _handleNewState(PlayerState state) {
+    for (final child in children.whereType<PlayerGear>()) {
       child.shouldRemove = true;
     }
 
@@ -111,6 +105,24 @@ class Player extends SpriteAnimationGroupComponent<bool>
       final item = entry.value;
       if (item != null) {
         add(PlayerGear(slot: entry.key, item: item));
+      }
+    }
+  }
+
+  void changeDirection({double x = 0, double y = 0}) {
+    direction
+      ..x = x
+      ..y = y;
+
+    if (direction == Vector2.zero()) {
+      if (!idle.isMounted) {
+        running.removeFromParent();
+        add(idle);
+      }
+    } else {
+      if (!running.isMounted) {
+        idle.removeFromParent();
+        add(running);
       }
     }
   }
@@ -126,7 +138,7 @@ class Player extends SpriteAnimationGroupComponent<bool>
       if (goingRight) {
         flipHorizontallyAroundCenter();
       }
-      direction.x = isDown ? -1 : 0;
+      changeDirection(x: isDown ? -1 : 0);
       goingRight = false;
       return true;
     }
@@ -134,35 +146,37 @@ class Player extends SpriteAnimationGroupComponent<bool>
       if (!goingRight) {
         flipHorizontallyAroundCenter();
       }
-      direction.x = isDown ? 1 : 0;
+      changeDirection(x: isDown ? 1 : 0);
       goingRight = true;
       return true;
     }
     if (event.logicalKey == LogicalKeyboardKey.keyW) {
-      direction.y = isDown ? -1 : 0;
+      changeDirection(y: isDown ? -1 : 0);
       return true;
     }
     if (event.logicalKey == LogicalKeyboardKey.keyS) {
-      direction.y = isDown ? 1 : 0;
+      changeDirection(y: isDown ? 1 : 0);
       return true;
     }
     if (!isDown && event.logicalKey == LogicalKeyboardKey.space) {
-      final closeChests = gameRef.children.whereType<Chest>().where((chest) {
-        if (!(chest.current ?? false)) {
-          final distance = position.distanceTo(chest.position);
-          return distance <= 50;
-        }
-        return false;
-      }).toList();
+      final closeChests = gameRef.descendants().whereType<Chest>().where(
+        (chest) {
+          if (!(chest.current ?? false)) {
+            final distance = position.distanceTo(chest.position);
+            return distance <= 50;
+          }
+          return false;
+        },
+      ).toList();
 
       if (closeChests.isNotEmpty) {
         final chest = closeChests.first..current = true;
 
-        gameRef.read<InventoryBloc>().add(
-              GameItemPickedUp(
-                chest.item,
-              ),
-            );
+        gameRef.inventoryBloc.add(
+          GameItemPickedUp(
+            chest.item,
+          ),
+        );
       }
 
       return true;

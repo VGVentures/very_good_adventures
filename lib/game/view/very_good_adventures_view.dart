@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_adventures/game/game.dart';
 
 class VeryGoodAdventuresGameView extends StatefulWidget {
@@ -42,7 +43,10 @@ class VeryGoodAdventuresGameViewState
               },
               child: GameWidget(
                 focusNode: gameFocusNode,
-                game: VeryGoodAdventuresGame(),
+                game: VeryGoodAdventuresGame(
+                  playerBloc: context.read<PlayerBloc>(),
+                  inventoryBloc: context.read<InventoryBloc>(),
+                ),
               ),
             ),
           ),
